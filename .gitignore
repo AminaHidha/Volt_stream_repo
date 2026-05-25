@@ -1,0 +1,29 @@
+# environments
+.env
+venv/
+ev_env/
+
+# python
+__pycache__/
+*.pyc
+*.sqlite3
+
+# vscode
+.vscode/
+
+# migrations cache
+*.log
+
+# mac/windows
+.DS_Store
+Thumbs.db
+
+# pytest
+.pytest_cache/
+
+# static/media
+media/
+staticfiles/
+
+# secrets
+*.pem
