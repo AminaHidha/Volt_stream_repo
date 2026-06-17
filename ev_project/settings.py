@@ -2,6 +2,15 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 from datetime import timedelta
+from decouple import config
+
+RAZORPAY_KEY_ID = config(
+    "RAZORPAY_KEY_ID"
+)
+
+RAZORPAY_KEY_SECRET = config(
+    "RAZORPAY_KEY_SECRET"
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,6 +30,8 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
 INSTALLED_APPS = [
+    'daphne',  # ✅ must be listed before django.contrib.staticfiles for ASGI runserver
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -32,8 +43,19 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
 
-    'users',
+    'channels',
     'corsheaders',
+
+    'users',
+    'owners',
+    'stations',
+    'chargers',
+    'slots',
+    'bookings',
+    'payments',
+    'notifications',
+    'reviews',
+    'realtime',  # ✅ new app for WebSocket consumers (create this app if not done yet)
 ]
 
 MIDDLEWARE = [
@@ -80,6 +102,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ev_project.wsgi.application'
 
+# ✅ ASGI — required for Django Channels (WebSocket support)
+ASGI_APPLICATION = 'ev_project.asgi.application'
+
+# ✅ Channel layer — IN-MEMORY for now, no Redis needed
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -114,7 +146,9 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.User'
 
 AUTHENTICATION_BACKENDS = [
-    'users.backends.EmailBackend'
+    'users.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+
 ]
 
 GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")

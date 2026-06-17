@@ -13,7 +13,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(
         write_only=True,
-        min_length=8
+        min_length=6
     )
 
     class Meta:
@@ -22,11 +22,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = [
             'full_name',
             'email',
-            'password',
             'phone',
-            'role'
+            'password',
+            'role',
         ]
-
     # =========================
     # EMAIL VALIDATION
     # =========================

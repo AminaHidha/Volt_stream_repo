@@ -1,0 +1,26 @@
+from django.urls import path
+
+from .views import (
+    CreateReviewView,
+    StationReviewsView,
+    StationAverageRatingView,
+)
+
+urlpatterns = [
+
+    path(
+        "create/",
+        CreateReviewView.as_view()
+    ),
+
+    path(
+        "station/<int:station_id>/",
+        StationReviewsView.as_view()
+    ),
+
+    path(
+        "station/<int:station_id>/average/",
+        StationAverageRatingView.as_view()
+    ),
+
+]
