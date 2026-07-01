@@ -1,6 +1,4 @@
-# Create your models here.
 from django.db import models
-
 from users.models import User
 
 
@@ -17,11 +15,8 @@ class OwnerProfile(models.Model):
     )
 
     business_name = models.CharField(max_length=200)
-
     station_name = models.CharField(max_length=200)
-
     station_address = models.TextField()
-
     license_number = models.CharField(max_length=100)
 
     approval_status = models.CharField(
@@ -29,8 +24,11 @@ class OwnerProfile(models.Model):
     )
 
     rejection_reason = models.TextField(blank=True)
-
     submitted_at = models.DateTimeField(auto_now_add=True)
+
+    # MFA Fields
+    mfa_enabled = models.BooleanField(default=False)
+    mfa_secret = models.CharField(max_length=32, blank=True, default="")
 
     def __str__(self):
         return self.station_name

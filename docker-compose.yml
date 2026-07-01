@@ -20,6 +20,17 @@ services:
       - "6379:6379"
     restart: always
 
+  nginx:
+    image: nginx:alpine
+    container_name: voltstream_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - django
+    restart: always
+
   django:
     build: .
     container_name: voltstream_django
