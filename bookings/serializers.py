@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import Booking
 
 
@@ -9,9 +10,4 @@ class BookingSerializer(serializers.ModelSerializer):
 
         fields = "__all__"
 
-        read_only_fields = [
-            "id",
-            "user",
-            "booking_status",
-            "created_at"
-        ]
+        read_only_fields = ["id", "user", "booking_status", "created_at"]

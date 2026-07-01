@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import Slot
 
 
@@ -9,8 +10,4 @@ class SlotSerializer(serializers.ModelSerializer):
 
         fields = "__all__"
 
-        read_only_fields = [
-            "id",
-            "created_at",
-            "is_booked"
-        ]
+        read_only_fields = ["id", "created_at", "is_booked"]

@@ -1,28 +1,22 @@
 from django.db import models
-from users.models import User
+
 from stations.models import ChargingStation
+from users.models import User
 
 
 class Review(models.Model):
 
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     station = models.ForeignKey(
-        ChargingStation,
-        on_delete=models.CASCADE,
-        related_name="reviews"
+        ChargingStation, on_delete=models.CASCADE, related_name="reviews"
     )
 
     rating = models.IntegerField()
 
     comment = models.TextField()
 
-    created_at = models.DateTimeField(
-        auto_now_add=True
-    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
 

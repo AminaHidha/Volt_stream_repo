@@ -1,10 +1,11 @@
-from rest_framework.views import APIView
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.views import APIView
 
 from .models import Notification
 from .serializers import NotificationSerializer
+
 
 class NotificationListView(APIView):
 
@@ -12,17 +13,15 @@ class NotificationListView(APIView):
 
     def get(self, request):
 
-        notifications = Notification.objects.filter(
-            user=request.user
-        ).order_by("-created_at")
-
-        serializer = NotificationSerializer(
-            notifications,
-            many=True
+        notifications = Notification.objects.filter(user=request.user).order_by(
+            "-created_at"
         )
 
+        serializer = NotificationSerializer(notifications, many=True)
+
         return Response(serializer.data)
-    
+
+
 class NotificationDetailView(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -32,23 +31,20 @@ class NotificationDetailView(APIView):
         try:
 
             notification = Notification.objects.get(
-                id=notification_id,
-                user=request.user
+                id=notification_id, user=request.user
             )
 
         except Notification.DoesNotExist:
 
             return Response(
-                {"error": "Notification not found"},
-                status=status.HTTP_404_NOT_FOUND
+                {"error": "Notification not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = NotificationSerializer(
-            notification
-        )
+        serializer = NotificationSerializer(notification)
 
         return Response(serializer.data)
-    
+
+
 class MarkNotificationReadView(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -58,24 +54,21 @@ class MarkNotificationReadView(APIView):
         try:
 
             notification = Notification.objects.get(
-                id=notification_id,
-                user=request.user
+                id=notification_id, user=request.user
             )
 
         except Notification.DoesNotExist:
 
             return Response(
-                {"error": "Notification not found"},
-                status=status.HTTP_404_NOT_FOUND
+                {"error": "Notification not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
         notification.is_read = True
         notification.save()
 
-        return Response({
-            "message": "Notification marked as read"
-        })
-    
+        return Response({"message": "Notification marked as read"})
+
+
 class DeleteNotificationView(APIView):
 
     permission_classes = [IsAuthenticated]
@@ -85,21 +78,15 @@ class DeleteNotificationView(APIView):
         try:
 
             notification = Notification.objects.get(
-                id=notification_id,
-                user=request.user
+                id=notification_id, user=request.user
             )
 
         except Notification.DoesNotExist:
 
             return Response(
-                {"error": "Notification not found"},
-                status=status.HTTP_404_NOT_FOUND
+                {"error": "Notification not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
         notification.delete()
 
-        return Response({
-            "message": "Notification deleted"
-        })
-    
-
+        return Response({"message": "Notification deleted"})

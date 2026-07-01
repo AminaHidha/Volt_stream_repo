@@ -5,13 +5,7 @@ User = get_user_model()
 
 class EmailBackend:
 
-    def authenticate(
-        self,
-        request,
-        username=None,
-        password=None,
-        **kwargs
-    ):
+    def authenticate(self, request, username=None, password=None, **kwargs):
 
         email = username or kwargs.get("email")
 
